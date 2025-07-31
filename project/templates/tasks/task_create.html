@@ -1,0 +1,187 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% comment %} {% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Create Task - TaskHero{% endblock %}
+
+{% block content %}
+<div class="task-form-page">
+    <div class="task-form-container">
+        <div class="form-header">
+            <h1>Create New Task</h1>
+            <p>Add a new task to your workflow</p>
+        </div>
+
+        <form class="task-form" action="{% url 'tasks:create' %}" method="post">
+            {% csrf_token %}
+        
+            <button type='submit'>submit</button>
+            <div class="form-group">
+                <label for="title">Task Title</label>
+                <input type="text" id="title" name="title" required placeholder="Enter task title">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="6" placeholder="Provide a detailed description of the task"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="due_date">Due Date</label>
+                    <input type="date" id="due_date" name="due_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="todo">To Do</option>
+                        <option value="progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="priority">Priority</label>
+                <div class="priority-options">
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="low" required>
+                        <span class="priority-indicator low">
+                            <i class="fas fa-circle"></i>
+                            Low
+                        </span>
+                    </label>
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="medium" required>
+                        <span class="priority-indicator medium">
+                            <i class="fas fa-minus-circle"></i>
+                            Medium
+                        </span>
+                    </label>
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="high" required>
+                        <span class="priority-indicator high">
+                            <i class="fas fa-exclamation-circle"></i>
+                            High
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'tasks:dashboard' %}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    Create Task
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} {% endcomment %}
+
+
+{% comment %} {% extends 'partials/base.html' %}
+{% load static %} {% endcomment %}
+
+{% block title %}Create Task - TaskHero{% endblock %}
+
+{% block content %}
+<div class="task-form-page">
+    <div class="task-form-container">
+        <div class="form-header">
+            <h1>Create New Task</h1>
+            <p>Add a new task to your workflow</p>
+        </div>
+
+        <form class="task-form" action="{% url 'tasks:create' %}" method="post">
+            {% csrf_token %}
+          
+
+            <!-- Show form errors -->
+            {% if form.errors %}
+                <div class="form-errors">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="id_title">Task Title</label>
+                {{ form.title }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_description">Description</label>
+                {{ form.description }}
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_due_date">Due Date</label>
+                    {{ form.due_date }}
+                </div>
+                <div class="form-group">
+                    <label for="id_status">Status</label>
+                    {{ form.status }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Priority</label>
+                {{ form.priority }}
+            </div>
+           <button type="submit" style="
+    position: relative;
+    background: linear-gradient(270deg, #6C63FF, #00C9A7, #FF6B6B, #6C63FF);
+    background-size: 800% 800%;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    animation: shineMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 1.5rem auto;
+    text-align: center;
+">
+    Create
+</button>
+
+<!-- Animation keyframes (must be included somewhere in your template) -->
+<style>
+@keyframes shineMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+            <div class="form-actions">
+                <a href="{% url 'tasks:dashboard' %}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

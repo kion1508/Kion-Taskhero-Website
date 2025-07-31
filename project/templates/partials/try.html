@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Video</title>
+    <style>
+        body {
+            height: 200vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 600px;
+        }
+        video {
+            width: 100%; /* Fill the container */
+            cursor: pointer; /* Indicate that the video is clickable */
+        }
+    </style>
+</head>
+<body>
+
+<div class="video-container">
+    <video id="myVideo">
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<script>
+    const video = document.getElementById('myVideo');
+
+    const checkScroll = () => {
+        const rect = video.getBoundingClientRect();
+        const isVisible = (rect.top >= 0 && rect.bottom <= window.innerHeight);
+
+        if (isVisible) {
+            if (!video.paused) {
+                video.play();
+            }
+        } else {
+            video.pause();
+        }
+    };
+
+    video.addEventListener('click', () => {
+        if (video.paused) {
+            video.play();
+        } else {
+            video.pause();
+        }
+    });
+
+    window.addEventListener('scroll', checkScroll);
+    window.addEventListener('resize', checkScroll);
+    checkScroll(); // Initial check
+</script>
+
+</body>
+</html>

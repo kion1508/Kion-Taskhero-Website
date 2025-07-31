@@ -1,0 +1,104 @@
+{% extends 'partials/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}Login - TaskHero{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Welcome Back</h1>
+                <p>Log in to your TaskHero account</p>
+            </div>
+
+            <form class="auth-form" action="{% url 'accounts:login' %}" method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                        <ul class="ul-error">
+                            {% for error in form.non_field_errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                <div class="form-group">
+                    {% if form.username.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.username.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    {% if form.password.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.password.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember_me">
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+               <button type="submit" style="
+    position: relative;
+    background: linear-gradient(270deg, #6C63FF, #00C9A7, #FF6B6B, #6C63FF);
+    background-size: 800% 800%;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    animation: shineMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 1.5rem auto;
+    text-align: center;
+">
+    <i class="fa-solid fa-arrow-right-to-bracket"></i> Login
+</button>
+
+<!-- Animation keyframes (must be included somewhere in your template) -->
+<style>
+@keyframes shineMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+
+                <button onclick="window.location.href = '{% provider_login_url 'google' %}' " type="button" class="login-with-google-btn" >
+                    <b>Sign in with Google</b>
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

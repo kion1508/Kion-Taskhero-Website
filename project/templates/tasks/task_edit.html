@@ -1,0 +1,101 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Edit Task - TaskHero{% endblock %}
+
+{% block content %}
+<div class="task-form-page">
+    <div class="task-form-container">
+        <div class="form-header">
+            <h1>Edit Task</h1>
+            <p>Update your task details</p>
+        </div>
+
+        <form class="task-form" action="{% url 'tasks:edit' task.pk %}" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Task Title</label>
+                <input type="text" id="title" name="title" value="{{ task.title }}" required placeholder="Enter task title">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" rows="6" placeholder="Provide a detailed description">{{ task.description }}</textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="due_date">Due Date</label>
+                    <input type="date" id="due_date" name="due_date" value="{{ task.due_date|date:'Y-m-d' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="todo" {% if task.status == "todo" %}selected{% endif %}>To Do</option>
+                        <option value="inprogress" {% if task.status == "inprogress" %}selected{% endif %}>In Progress</option>
+                        <option value="completed" {% if task.status == "completed" %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="priority">Priority</label>
+                <div class="priority-options">
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="low" {% if task.priority == "low" %}checked{% endif %}>
+                        <span class="priority-indicator low"><i class="fas fa-circle"></i> Low</span>
+                    </label>
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="medium" {% if task.priority == "medium" %}checked{% endif %}>
+                        <span class="priority-indicator medium"><i class="fas fa-minus-circle"></i> Medium</span>
+                    </label>
+                    <label class="priority-option">
+                        <input type="radio" name="priority" value="high" {% if task.priority == "high" %}checked{% endif %}>
+                        <span class="priority-indicator high"><i class="fas fa-exclamation-circle"></i> High</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{% url 'tasks:detail' task.pk %}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+                <button type="submit" style="
+    position: relative;
+    background: linear-gradient(270deg, #6C63FF, #00C9A7, #FF6B6B, #6C63FF);
+    background-size: 800% 800%;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    animation: shineMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 1.5rem auto;
+    text-align: center;
+">
+    Update Task
+</button>
+
+<!-- Animation keyframes (must be included somewhere in your template) -->
+<style>
+@keyframes shineMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

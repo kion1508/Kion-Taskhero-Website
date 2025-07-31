@@ -1,0 +1,155 @@
+{% extends 'partials/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block title %}Sign Up - TaskHero{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>Create Your Account</h1>
+                <p>Join TaskHero and start managing your tasks efficiently</p>
+            </div>
+
+            <form class="auth-form" action="{% url 'accounts:signup' %}" method="post">
+                {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <ul class="ul-error">
+                            {% for error in form.non_field_errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                
+                <div class="form-row" style="grid-template-columns:1fr">
+
+                    <div class="form-group">
+                    {% if form.first_name.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.first_name.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                    {% if form.last_name.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.last_name.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {% if form.email.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.email.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    {% if form.username.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.username.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    {% if form.password1.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.password1.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+
+                    <label for="password1">Password</label>
+                    <input type="password" id="password1" name="password1" required>
+                </div>
+
+                <div class="form-group">
+                    {% if form.password2.errors %}
+                        <ul class="ul-error">
+                            {% for error in form.password2.errors %}
+                                <li class="li-error">{{ error }}</li>
+                            {% endfor %}                
+                        </ul>
+                    {% endif %}
+
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" id="password2" name="password2" required>
+                </div>
+                    <button type="submit" style="
+    position: relative;
+    background: linear-gradient(270deg, #6C63FF, #00C9A7, #FF6B6B, #6C63FF);
+    background-size: 800% 800%;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    animation: shineMove 6s ease infinite;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 320px;
+    display: block;
+    margin: 1.5rem auto;
+    text-align: center;
+">
+    Create Account
+</button>
+
+<!-- Animation keyframes (must be included somewhere in your template) -->
+<style>
+@keyframes shineMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+
+                {% comment %} <button type="button" class="btn btn-google btn-full" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i>
+                    Sign up with Google
+                </button> {% endcomment %}
+               <button onclick="window.location.href = '{% provider_login_url 'google' %}' " type="button" class="login-with-google-btn" >
+                    <b>Sign in with Google</b>
+                </button>
+
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Log in here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

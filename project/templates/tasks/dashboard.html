@@ -1,0 +1,220 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - TaskHero{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <div class="dashboard-header">
+        <div class="dashboard-title">
+            <h1>My Tasks</h1>
+            <p>Manage and track your tasks efficiently</p>
+        </div>
+        <div class="dashboard-actions">
+            <a href="{% url 'tasks:create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Add New Task
+            </a>
+        </div>
+    </div>
+
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon todo">
+                <i class="fas fa-list"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ todo_count }}</h3>
+                <p>To Do</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon progress">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ in_progress_count }}</h3>
+                <p>In Progress</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon completed">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ completed_count }}</h3>
+                <p>Completed</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon overdue">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="stat-content">
+                <h3>{{ overdue_count }}</h3>
+                <p>Overdue</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="kanban-board">
+        <div class="kanban-column todo-column">
+            <div class="column-header">
+                <h2><i class="fas fa-list"></i> To Do</h2>
+                <span class="task-count">{{ todo_count }}</span>
+            </div>
+           
+            <div class="tasks-container">
+                 {% for i in todo_tasks %}
+                 <a href="{% url 'tasks:detail' i.pk %}">
+                    <div class="task-card">
+                        <div class="task-header">
+                            <h3>{{ i.title }}</h3>
+                            <div class="priority high">
+                                <i class="fas fa-exclamation-circle"></i>
+                                {{ i.get_priority_display}}
+                            </div>
+                        </div>
+                        <p class="task-description">{{ i.description }}</p>
+                        <div class="task-meta">
+                            <span class="due-date">
+                                <i class="fas fa-calendar"></i>
+                               {{i.due_date}}
+                            </span>
+                        </div>
+                        <div class="task-actions">
+                            <a href="{% url 'tasks:edit' i.pk %}">
+                                <button class="btn-icon edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </a>
+                            <a href="{% url 'tasks:delete' i.id %}" class="btn-icon delete" title="Delete">
+                                <button class="btn-icon delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>  
+                            </a>
+                        </div>
+                    </div>
+                 </a>
+                {% empty %}
+                    <p>No tasks in this category yet.</p>
+                {% endfor %}
+                
+                
+            </div>
+        </div>
+
+        <div class="kanban-column progress-column">
+            <div class="column-header">
+                <h2><i class="fas fa-clock"></i> In Progress</h2>
+                <span class="task-count">{{ in_progress_count }}</span>
+            </div>
+            <div class="tasks-container">
+                {% for i in inprogress_tasks %}
+                
+                
+                    <a href="{% url 'tasks:detail' i.pk %}">
+                        <div class="task-card">
+                            <div class="task-header">
+                                <h3>{{i.title}}</h3>
+                                <div class="priority high">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    {{i.get_priority_display}}
+                                </div>
+                            </div>
+                            <p class="task-description">{{i.description}}</p>
+                            <div class="task-meta">
+                                <span class="due-date">
+                                    <i class="fas fa-calendar"></i>
+                                    {{i.due_date}}
+                                </span>
+                            </div>
+                            <div class="task-actions">
+                                <a href="{% url 'tasks:edit' i.pk %}">
+                                    <button class="btn-icon edit" >
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </a>
+                                <a href="{% url 'tasks:delete' i.id %}" class="btn-icon delete" title="Delete">
+                                    <button class="btn-icon delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>  
+                                </a>
+                               
+                            </div>
+                        </div>
+                    </a>
+                    {% empty %}
+                        <p>No tasks in this category yet.</p>
+                {% endfor %}
+
+                
+            
+            </div>
+        </div>
+
+        <div class="kanban-column completed-column">
+            <div class="column-header">
+                <h2><i class="fas fa-check-circle"></i> Completed</h2>
+                <span class="task-count">{{ completed_count }}</span>
+            </div>
+            <div class="tasks-container">
+                    {% for i in completed_tasks %}
+                        
+                        
+                        <a href="{%url 'tasks:detail' i.pk %}">
+                            <div class="task-card completed">
+
+                                <div class="task-header">
+                                    <h3>{{i.title}}</h3>
+                                    <div class="priority low">
+                                        <i class="fas fa-circle"></i>
+                                        {{i.get_priority_display}}
+                                    </div>
+                                </div>
+                                <p class="task-description">{{i.description}}</p>
+                                <div class="task-meta">
+                                    <span class="due-date">
+                                        <i class="fas fa-calendar-check"></i>
+                                        {{i.due_date}}
+                                    </span>
+                                </div>
+                                <div class="task-actions">
+                                    <a href="{% url 'tasks:edit' i.pk %}">
+                                        <button class="btn-icon edit" >
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </a>
+                                    <a href="{% url 'tasks:delete' i.id %}" class="btn-icon delete" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                            <p>No tasks in this category yet.</p>
+                    {% endfor %}
+                
+                    
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Deletion</h3>
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete this task? This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn btn-danger" onclick="deleteTask()">Delete Task</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
